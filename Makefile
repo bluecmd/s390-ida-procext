@@ -25,13 +25,12 @@ SOURCES := s390.cpp
 
 all: s390ext64.so s390ext.so
 
-obj:
+obj/%.o32: %.cpp
 	mkdir -p obj
-
-obj/%.o32: %.cpp obj
 	g++ $(CFLAGS) -D__LINUX__ -c -o "$@" "$<"
 
-obj/%.o64: %.cpp obj
+obj/%.o64: %.cpp
+	mkdir -p obj
 	g++ $(CFLAGS) -D __EA64__ -D__LINUX__ -c -o "$@" "$<"
 
 s390ext.so: $(patsubst %.cpp,obj/%.o32,$(SOURCES))
